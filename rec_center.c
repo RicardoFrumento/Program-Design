@@ -208,25 +208,70 @@ struct request *append(struct request *list){
         if(strcmp(info2->email,email)==0 && strcmp(info2->first,fName)==0 && strcmp(info2->last,lName)==0 && strcmp(info2->class,class)==0) //Checks if the request exists
             break;
     }
-    if(info2 == NULL){
-        newRequest = malloc(sizeof(struct request)); //Allocating memory for the new node
+    
+    if(info2 != NULL && info1 != NULL){ //If the new element should be added between elements
+            newRequest = malloc(sizeof(struct request)); //Allocating memory for the new node
 
-        if(newRequest == NULL){
-            printf("Operation did not work\n");
+            if(newRequest == NULL){
+                printf("Operation did not work\n");
+                return list;
+            }
+
+            strcpy(newRequest->email,email);
+            strcpy(newRequest->class,class);
+            strcpy(newRequest->first,fName);
+            strcpy(newRequest->last,lName);
+            newRequest->next = info2;
+            info1->next = newRequest;
             return list;
-        }
-
-        strcpy(newRequest->email,email);
-        strcpy(newRequest->class,class);
-        strcpy(newRequest->first,fName);
-        strcpy(newRequest->last,lName);
-        info1->next=newRequest;
-        info2 = newRequest;
-        return list;
     }
-    else{
-        printf("There is already a request\n"); //Error message if the request already exists
-        return list;
+    else if(info2 == NULL && info1 == NULL){ //If the list is empty
+            newRequest = malloc(sizeof(struct request)); //Allocating memory for the new node
+
+            if(newRequest == NULL){
+                printf("Operation did not work\n");
+                return list;
+            }
+
+            strcpy(newRequest->email,email);
+            strcpy(newRequest->class,class);
+            strcpy(newRequest->first,fName);
+            strcpy(newRequest->last,lName);
+            newRequest->next = NULL;
+            list = newRequest;
+            return list;
+    }
+    else if(info2 != NULL && info1 == NULL){ //If the element should be added at the end of the ordered array
+            newRequest = malloc(sizeof(struct request)); //Allocating memory for the new node
+
+            if(newRequest == NULL){
+                printf("Operation did not work\n");
+                return list;
+            }
+
+            strcpy(newRequest->email,email);
+            strcpy(newRequest->class,class);
+            strcpy(newRequest->first,fName);
+            strcpy(newRequest->last,lName);
+            newRequest->next = info2;
+            list = newRequest;
+            return list;
+    }
+    else{ //If there is one element 
+            newRequest = malloc(sizeof(struct request)); //Allocating memory for the new node
+
+            if(newRequest == NULL){
+                printf("Operation did not work\n");
+                return list;
+            }
+
+            strcpy(newRequest->email,email);
+            strcpy(newRequest->class,class);
+            strcpy(newRequest->first,fName);
+            strcpy(newRequest->last,lName);
+            newRequest->next = info2;
+            info1->next = newRequest;
+            return list;
     }
 }
 
